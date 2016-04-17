@@ -35,7 +35,7 @@ public class Game : MonoBehaviour
 		if (CurrentPlayer != null)
 		{
 			GUILayout.Label("Current Player: " + CurrentPlayer.name);
-			GUILayout.Label("Player Lvl: " + CurrentPlayer.Lvl);
+			GUILayout.Label("Player Lvl: " + CurrentPlayer.Level);
 			GUILayout.Label("Player Power: " + CurrentPlayer.Power);
 			if (CurrentPlayer.Class != null)
 			{
@@ -351,7 +351,6 @@ public class Game : MonoBehaviour
 				var hand = CurrentPlayer.transform.FindChild("Hand");
 				card.transform.parent = hand.transform;
 			}
-			CurrentPlayer.Lvl += card.GetComponent<Monster>().LevelCount;
 		}
 	}
 }

@@ -1,17 +1,16 @@
 ﻿using UnityEngine;
 
-public class Weapon : MonoBehaviour {
-    public bool InTwoArms;
-    public WeaponType Type;
-    public bool FireDamage;
+public class Weapon : MonoBehaviour
+{
+	public bool InTwoArms;
+	public WeaponTypes WeaponType;
+	public bool FireDamage;
 
-    public enum WeaponType {
-        No,
-        Energy,
-        Fire,
-        Steel,
-        Light,
-        Heavy
-    }
-
+	public enum WeaponTypes
+	{
+		Steel,
+		Light,
+		Heavy,
+		Energy,
+	}
 }

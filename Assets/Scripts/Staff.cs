@@ -1,22 +1,48 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
-public class Staff : MonoBehaviour
+public enum StuffTypes
 {
-	public string StaffType;
-	public bool Junk;
+	None,
+	Weapon,
+	Helmet,
+	Armor,
+	Boots,
+	Modifier,
+	Knuckles,
+	Explosive,
+	Junk
+}
+
+public class Staff : MonoBehaviour, IModifier
+{
+	public StuffTypes StuffType;
 	public int Price;
 	public int Power;
 	public bool OneTime;
 	public ActionSide Side;
 	public bool BigStaff;
-	public bool IsHeavy;
 	public bool Ability;
 	public bool isCondition;
 	public ConditionClass ForClass;
 	public ConditionClass NotForClass;
 	public ConditionRadiation NotForRadiation;
 	public bool IsPreWar;
+	public List<Staff> StuffModifiers;
+
+	public int Bonus
+	{
+		get
+		{
+			return Power;
+		}
+	}
+
+	void Start()
+	{
+		StuffModifiers = new List<Staff>();
+	}
 
 	public enum ActionSide
 	{
@@ -46,7 +72,6 @@ public class Staff : MonoBehaviour
 		if (!isCondition)
 		{
 			var card = this.GetComponentInParent<Card>();
-			player.Power += this.Power;
 
 			if (card.GameLocation == GameLocations.InHand)
 				player.Hand.Remove(card);
@@ -90,25 +115,25 @@ public class Staff : MonoBehaviour
 	private Vector3 setPosition(Card card)
 	{
 		Vector3 position = new Vector3(0, 0, 0);
-		switch (card.GetComponent<Staff>().StaffType)
+		switch (card.GetComponent<Staff>().StuffType)
 		{
 			//TODO Проверка на двуручное + наличие
-			case "Weapon":
+			case StuffTypes.Weapon:
 				if (card.GetComponent<Weapon>().InTwoArms)
 					position = new Vector3(17, 29, 0);
 				else
 					position = new Vector3(14, 29, 0);
 				break;
-			case "Kastet":
+			case StuffTypes.Knuckles:
 				position = new Vector3(14, 29, 0);
 				break;
-			case "Armor":
+			case StuffTypes.Armor:
 				position = new Vector3(35, 29, 0);
 				break;
-			case "Helmet":
+			case StuffTypes.Helmet:
 				position = new Vector3(28, 29, 0);
 				break;
-			case "Boot":
+			case StuffTypes.Boots:
 				position = new Vector3(41, 29, 0);
 				break;
 		}

@@ -114,27 +114,31 @@ public class Card : MonoBehaviour
 				}
 			}
 			//Treasure
-			if (this.Type == CardType.Treasure)
+			if (Type == CardType.Treasure)
 			{
-				if (this.GetComponent<Treasure>().Type == Treasure.TreasureType.Staff)
+				if (GetComponent<Treasure>().Type == Treasure.TreasureType.Staff)
 				{
-					if (
-						this.GetComponent<Staff>().StaffType == "Armor" ||
-						this.GetComponent<Staff>().StaffType == "Helmet" ||
-						this.GetComponent<Staff>().StaffType == "Boot" ||
-						this.GetComponent<Staff>().StaffType == "Weapon" ||
-						this.GetComponent<Staff>().StaffType == "Kastet"
-						)
+					var stuff = GetComponent<Staff>();
+					switch (stuff.StuffType)
 					{
-						if (GUI.Button(new Rect(400, 450, 125, 50), "Put On"))
-						{
-							PutOn(this);
-						}
+						case StuffTypes.Weapon:
+						case StuffTypes.Knuckles:
+						case StuffTypes.Helmet:
+						case StuffTypes.Armor:
+						case StuffTypes.Boots:
+							if (GUI.Button(new Rect(400, 450, 125, 50), "Put On"))
+								PutOn(this);
+							break;
+						default:
+						case StuffTypes.None:
+						case StuffTypes.Modifier:
+						case StuffTypes.Junk:
+						case StuffTypes.Explosive:
+							break;
 					}
+
 					if (GUI.Button(new Rect(525, 450, 125, 50), "To Bag"))
-					{
 						ToBag(this);
-					}
 					if (GUI.Button(new Rect(275, 450, 125, 50), "Sell"))
 					{
 						//TODO: Продать из корзины
@@ -181,13 +185,13 @@ public class Card : MonoBehaviour
 				card.GetComponent<Treasure>().Use(player);
 			}
 			//подтип Взрывчатка
-			if (card.GetComponent<Staff>().StaffType == "Explosion")
+			if (card.GetComponent<Staff>().StuffType == StuffTypes.Explosive)
 			{
 				//TODO: Вызвать метод из словаря
 				card.GetComponent<Treasure>().Use(player);
 			}
 			//подтип Бафф
-			if (card.GetComponent<Staff>().StaffType == "Buff")
+			if (card.GetComponent<Staff>().StuffType == StuffTypes.None)
 			{
 				//TODO: Вызвать метод из словаря
 				card.GetComponent<Treasure>().Use(player);
