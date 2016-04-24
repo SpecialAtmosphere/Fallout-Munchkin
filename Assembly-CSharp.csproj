@@ -6,7 +6,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{BC4FEE0D-0A79-A4AD-3B12-15AB7253687B}</ProjectGuid>
+    <ProjectGuid>{D4B0FEC5-B40B-37D2-8A8F-E263AA0AC43E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Assembly-CSharp</AssemblyName>
@@ -112,6 +112,9 @@
      <Compile Include="Assets\Scripts\Game.cs" />
      <Compile Include="Assets\Scripts\GameController.cs" />
      <Compile Include="Assets\Scripts\Handler.cs" />
+     <Compile Include="Assets\Scripts\Interfaces\ICardPlayer.cs" />
+     <Compile Include="Assets\Scripts\Interfaces\IFighter.cs" />
+     <Compile Include="Assets\Scripts\Interfaces\IModifier.cs" />
      <Compile Include="Assets\Scripts\Inventory.cs" />
      <Compile Include="Assets\Scripts\Monster.cs" />
      <Compile Include="Assets\Scripts\Network\NetworkManager.cs" />
@@ -135,15 +138,15 @@
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll</HintPath>
  </Reference>
  <Reference Include="Photon3Unity3D">
- <HintPath>D:/Unity_Projects/CardGame_Beta/Assets/Plugins/Photon3Unity3D.dll</HintPath>
+ <HintPath>D:/Unity_Projects/CardGame_Update/Fallout-Munchkin/Assets/Plugins/Photon3Unity3D.dll</HintPath>
  </Reference>
  <Reference Include="websocket-sharp">
- <HintPath>D:/Unity_Projects/CardGame_Beta/Assets/Plugins/WebSocket/websocket-sharp.dll</HintPath>
+ <HintPath>D:/Unity_Projects/CardGame_Update/Fallout-Munchkin/Assets/Plugins/WebSocket/websocket-sharp.dll</HintPath>
  </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Assembly-CSharp-firstpass.csproj">
-      <Project>{D662710E-1959-307E-0184-4EC593CF4F66}</Project>      <Name>Assembly-CSharp-firstpass</Name>    </ProjectReference>
+      <Project>{C3DEA583-6272-8508-0B9D-0924E833CFFA}</Project>      <Name>Assembly-CSharp-firstpass</Name>    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
