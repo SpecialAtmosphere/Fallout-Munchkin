@@ -106,6 +106,7 @@
      <Compile Include="Assets\Photon Unity Networking\UtilityScripts\TimeKeeper.cs" />
      <Compile Include="Assets\Scripts\Card.cs" />
      <Compile Include="Assets\Scripts\CardPlayer.cs" />
+     <Compile Include="Assets\Scripts\ChatGui.cs" />
      <Compile Include="Assets\Scripts\Class.cs" />
      <Compile Include="Assets\Scripts\Dice.cs" />
      <Compile Include="Assets\Scripts\Door.cs" />
@@ -117,6 +118,7 @@
      <Compile Include="Assets\Scripts\Interfaces\IModifier.cs" />
      <Compile Include="Assets\Scripts\Inventory.cs" />
      <Compile Include="Assets\Scripts\Monster.cs" />
+     <Compile Include="Assets\Scripts\NamePickGui.cs" />
      <Compile Include="Assets\Scripts\Network\NetworkManager.cs" />
      <Compile Include="Assets\Scripts\Network\Player.cs" />
      <Compile Include="Assets\Scripts\Partner.cs" />
