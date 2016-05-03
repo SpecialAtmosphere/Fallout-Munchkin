@@ -11,6 +11,21 @@ public class CardPlayer : MonoBehaviour, ICardPlayer
 	public List<Card> Class;
 	public List<Card> Partners;
 
+	static readonly Dictionary<string, ConditionClass> ConditionClassesNames = new Dictionary<string, ConditionClass> {
+		{ "Raider", ConditionClass.Raider },
+		{ "Enclave_scientist", ConditionClass.Enclave_scientist },
+		{ "Lone_wanderer", ConditionClass.Lone_wanderer },
+		{ "Brotherhood_paladin", ConditionClass.Brotherhood_paladin } };
+
+	public IEnumerable<ConditionClass> ConditionClasses
+	{
+		get
+		{
+			var classNames = Class.Select(x => x.name);
+			return ConditionClassesNames.Where(x => classNames.Contains(x.Key)).Select(x => x.Value);
+		}
+	}
+
 	/// <summary>
 	/// Минимальный уровень персонажа, ниже которого опуститься нельзя
 	/// </summary>
@@ -23,6 +38,18 @@ public class CardPlayer : MonoBehaviour, ICardPlayer
 	/// Кол-во рук персонажа по умолчанию
 	/// </summary>
 	const int defaultHandCount = 2;
+	/// <summary>
+	/// Кол-во больших шмоток, которые может нести персонаж
+	/// </summary>
+	const int defaultBigStuffCapacity = 1;
+
+	public bool CanTakeBigStuff
+	{
+		get
+		{
+			return defaultBigStuffCapacity - Inventary.Concat(Bag).Select(x => x.gameObject.GetComponent<Staff>()).Where(x => x.BigStaff).Count() > 0; //+ бонусы
+		}
+	}
 
 	public bool CanTakePartner
 	{
@@ -96,7 +123,7 @@ public class CardPlayer : MonoBehaviour, ICardPlayer
 		foreach (var h in this.Hand)
 		{
 			this.Hand.Remove(h);
-			if (h.Type == Card.CardType.Door)
+			if (h.Type == CardType.Door)
 				game.dReset(h);
 			else
 				game.tReset(h);

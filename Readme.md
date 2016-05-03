@@ -1,4 +1,4 @@
-===================================
+﻿===================================
 12/04/16 Commit: Content update#2
 -----------------------------------
 - Reset Btn -> Move + fix.
@@ -22,4 +22,6 @@
 - Add perk cards
 * etc.
 ===================================
-Practiсe
+03/05/16 Commit: Nano update
+- Removed IsCondition property
+- Added Use and Carry check for classes and big stuff

@@ -173,7 +173,7 @@ public class Trap : MonoBehaviour
 				//TODO: Изменить при наличии других игроков
 				var crd = player.Hand.ElementAt(Random.Range(0, player.Hand.Count - 1));
 				player.Hand.Remove(crd);
-				if (crd.Type == Card.CardType.Door)
+				if (crd.Type == CardType.Door)
 					game.dReset(crd);
 				else
 					game.tReset(crd);
@@ -203,7 +203,7 @@ public class Trap : MonoBehaviour
 	void ToReset(Card card)
 	{
 		var game = GameObject.FindObjectOfType<Game>();
-		if (card.Type == Card.CardType.Door)
+		if (card.Type == CardType.Door)
 			game.dReset(card);
 		else
 			game.tReset(card);

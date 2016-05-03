@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public enum GameLocations
 {
@@ -8,6 +7,13 @@ public enum GameLocations
 	InUse,
 	InBag,
 	InReset
+}
+
+public enum CardType
+{
+	Door,
+	Treasure,
+	Perk
 }
 
 public class Card : MonoBehaviour
@@ -23,13 +29,6 @@ public class Card : MonoBehaviour
 	private Handler Handler;
 	private SpriteRenderer SpriteRenderer;
 	private string preSelectedSortingLayer;
-
-	public enum CardType
-	{
-		Door,
-		Treasure,
-		Perk
-	}
 
 	void Start()
 	{

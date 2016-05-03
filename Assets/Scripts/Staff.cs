@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Linq;
 using System.Collections.Generic;
 
 public enum StuffTypes
@@ -15,7 +15,30 @@ public enum StuffTypes
 	Junk
 }
 
-public class Staff : MonoBehaviour, IModifier
+public enum ActionSide
+{
+	No,
+	Yourself,
+	For_everyone
+}
+
+public enum ConditionClass
+{
+	No,
+	Raider,
+	Enclave_scientist,
+	Lone_wanderer,
+	Brotherhood_paladin
+}
+
+public enum ConditionRadiation
+{
+	No,
+	Mutant,
+	Ghoul
+}
+
+public class Staff : MonoBehaviour, IModifier, IUsable
 {
 	public StuffTypes StuffType;
 	public int Price;
@@ -24,18 +47,18 @@ public class Staff : MonoBehaviour, IModifier
 	public ActionSide Side;
 	public bool BigStaff;
 	public bool Ability;
-	public bool isCondition;
 	public ConditionClass ForClass;
 	public ConditionClass NotForClass;
 	public ConditionRadiation NotForRadiation;
 	public bool IsPreWar;
 	public List<Staff> StuffModifiers;
+	public bool Ignore { get; set; }
 
 	public int Bonus
 	{
 		get
 		{
-			return Power;
+			return Ignore ? 0 : Power;
 		}
 	}
 
@@ -44,35 +67,50 @@ public class Staff : MonoBehaviour, IModifier
 		StuffModifiers = new List<Staff>();
 	}
 
-	public enum ActionSide
+	/// <summary>
+	/// Функция проверяет может ли персонаж нести шмотку
+	/// </summary>
+	/// <param name="player">персонаж</param>
+	/// <returns>true - персонаж может нести шмотку, false - не может</returns>
+	public bool CanCarry(CardPlayer player)
 	{
-		No,
-		Yourself,
-		For_everyone
+		if (BigStaff && !player.CanTakeBigStuff)
+			return false;
+
+		return true;
 	}
 
-	public enum ConditionClass
+	/// <summary>
+	/// Функция проверяет может ли персонаж использовать шмотку
+	/// </summary>
+	/// <param name="player">персонаж</param>
+	/// <returns>true - персонаж может использовать шмотку, false - не может</returns>
+	public bool CanUse(CardPlayer player)
 	{
-		No,
-		Raider,
-		Enclave_scientist,
-		Lone_wanderer,
-		Brotherhood_paladin
-	}
+		if (!CanCarry(player)) // если персонаж даже нести шмотку не может,
+			return false; // то использовать и подавно
 
-	public enum ConditionRadiation
-	{
-		No,
-		Mutant,
-		Ghoul
+		if (ForClass != ConditionClass.No || NotForClass != ConditionClass.No) // на шмотке есть какие-то ограничения по классу
+		{
+			var conditionClasses = player.ConditionClasses;
+
+			if (ForClass != ConditionClass.No && !conditionClasses.Contains(ForClass)) // персонажу не хватает класса, чтобы использовать шмотку
+				return false;
+
+			if (NotForClass != ConditionClass.No && conditionClasses.Contains(ForClass)) // текущий класс персонажа не подходит
+				return false;
+		}
+
+		return true;
+
 	}
 
 	public void PutOn(CardPlayer player)
 	{
-		if (!isCondition)
-		{
-			var card = this.GetComponentInParent<Card>();
+		var card = this.GetComponentInParent<Card>();
 
+		if (CanUse(player))
+		{
 			if (card.GameLocation == GameLocations.InHand)
 				player.Hand.Remove(card);
 			else
@@ -87,8 +125,8 @@ public class Staff : MonoBehaviour, IModifier
 			card.transform.parent = inv.transform;
 			card.transform.position = setPosition(card);
 			card.transform.localScale = new Vector3(1, 1, 1);
-			card.Deselect();
 		}
+		card.Deselect();
 	}
 
 	public void ToBag(CardPlayer player)
