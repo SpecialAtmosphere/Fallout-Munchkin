@@ -38,7 +38,7 @@ public enum ConditionRadiation
 	Ghoul
 }
 
-public class Staff : MonoBehaviour, IModifier, IUsable
+public class Staff : MonoBehaviour, IUsable
 {
 	public StuffTypes StuffType;
 	public int Price;
@@ -109,23 +109,33 @@ public class Staff : MonoBehaviour, IModifier, IUsable
 	{
 		var card = this.GetComponentInParent<Card>();
 
-		if (CanUse(player))
+		switch (card.GameLocation)
 		{
-			if (card.GameLocation == GameLocations.InHand)
-				player.Hand.Remove(card);
-			else
-				player.Bag.Remove(card);
+			case GameLocations.InBag:
+			case GameLocations.InHand:
+				if (CanUse(player))
+				{
 
-			//Add to Inventary list
-			player.Inventary.Add(card);
-			card.SwitchGameLocation(GameLocations.InUse);
+					if (card.GameLocation == GameLocations.InHand)
+						player.Hand.Remove(card);
+					else
+						player.Bag.Remove(card);
 
-			//transform
-			var inv = player.transform.FindChild("Inventory");
-			card.transform.parent = inv.transform;
-			card.transform.position = setPosition(card);
-			card.transform.localScale = new Vector3(1, 1, 1);
+					//Add to Inventary list
+					player.Inventary.Add(card);
+					card.SwitchGameLocation(GameLocations.InUse);
+
+					//transform
+					var inv = player.transform.FindChild("Inventory");
+					card.transform.parent = inv.transform;
+					card.transform.position = setPosition(card);
+					card.transform.localScale = new Vector3(1, 1, 1);
+				}
+				break;
+			default:
+				break;
 		}
+
 		card.Deselect();
 	}
 
@@ -133,20 +143,29 @@ public class Staff : MonoBehaviour, IModifier, IUsable
 	{
 		var card = this.GetComponentInParent<Card>();
 
-		if (card.GameLocation == GameLocations.InHand)
-			player.Hand.Remove(card);
-		else
-			player.Inventary.Remove(card);
+		switch (card.GameLocation)
+		{
+			case GameLocations.InHand:
+			case GameLocations.InUse:
+				if (card.GameLocation == GameLocations.InHand)
+					player.Hand.Remove(card);
+				else
+					player.Inventary.Remove(card);
 
-		player.Bag.Add(card);
-		card.SwitchGameLocation(GameLocations.InBag);
+				player.Bag.Add(card);
+				card.SwitchGameLocation(GameLocations.InBag);
 
-		int Y = 35 - player.Bag.Count * 5;
-		var bag = player.transform.FindChild("Bag");
-		card.transform.parent = bag.transform;
-		card.transform.position = new Vector3(50, Y, 0);
-		card.transform.Rotate(0, 0, 270);
-		card.transform.localScale = new Vector3(1, 1, 1);
+				int Y = 35 - player.Bag.Count * 5;
+				var bag = player.transform.FindChild("Bag");
+				card.transform.parent = bag.transform;
+				card.transform.position = new Vector3(50, Y, 0);
+				card.transform.Rotate(0, 0, 270);
+				card.transform.localScale = new Vector3(1, 1, 1);
+				break;
+			default:
+				break;
+		}
+
 		card.Deselect();
 	}
 

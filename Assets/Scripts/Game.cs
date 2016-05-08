@@ -37,9 +37,11 @@ public class Game : MonoBehaviour
 			GUILayout.Label("Current Player: " + CurrentPlayer.name);
 			GUILayout.Label("Player Lvl: " + CurrentPlayer.Level);
 			GUILayout.Label("Player Power: " + CurrentPlayer.Power);
-			if (CurrentPlayer.Class != null)
+			if (CurrentPlayer.Classes != null)
 			{
-				GUILayout.Label(string.Format("Player class: {0}", (CurrentPlayer.Class.Any()) ? CurrentPlayer.Class.FirstOrDefault().name : "null"));
+				var classString = "";
+				CurrentPlayer.ConditionClasses.ToList().ForEach(x => classString += x.ToString() + " ");
+				GUILayout.Label(string.Format("Player class: {0}", classString));
 			}
 		}
 		if (CurrentStage == "Radiation")

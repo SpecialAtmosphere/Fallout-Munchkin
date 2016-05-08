@@ -51,22 +51,22 @@ public class Trap : MonoBehaviour
 				ToReset(card);
 				break;
 			case "Re_education":
-				if (player.Class.Any())
+				if (player.Classes.Any())
 				{
 					var tReset = GameObject.Find("tReset").GetComponentsInChildren<Class>().ToList();
 					var newClass = new Card();
-					var oldClass = player.Class.FirstOrDefault();
+					var oldClass = player.Classes.FirstOrDefault();
 					if (tReset.Any())
 					{
-						player.Class.Remove(oldClass);
+						player.Classes.Remove(oldClass);
 						game.dReset(oldClass);
-						player.Class.Add(tReset.First().GetComponentInParent<Card>());
+						player.Classes.Add(tReset.First().GetComponentInParent<Card>());
 					}
 					else
 					{
-						foreach (var cl in player.Class)
+						foreach (var cl in player.Classes)
 						{
-							player.Class.Remove(cl);
+							player.Classes.Remove(cl);
 							game.dReset(cl);
 						}
 					}
@@ -133,10 +133,10 @@ public class Trap : MonoBehaviour
 				ToReset(card);
 				break;
 			case "Confussion":
-				if (player.Class.Any())
+				if (player.Classes.Any())
 				{
-					var cls = player.Class.FirstOrDefault();
-					player.Class.Remove(cls);
+					var cls = player.Classes.FirstOrDefault();
+					player.Classes.Remove(cls);
 					game.dReset(cls);
 				}
 				else
@@ -182,7 +182,7 @@ public class Trap : MonoBehaviour
 			case "RaidersRaid":
 				//TODO: Дописать значение о лишении уровня.
 				bool isRaider = false;
-				foreach (var cl in player.Class)
+				foreach (var cl in player.Classes)
 				{
 					if (cl.GetComponent<Door>().Name == "Raider")
 					{

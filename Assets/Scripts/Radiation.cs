@@ -16,9 +16,9 @@ public class Radiation : MonoBehaviour
 					player.Perks.Remove(p);
 					game.pReset(p);
 				}
-				foreach (var c in player.Class)
+				foreach (var c in player.Classes)
 				{
-					player.Class.Remove(c);
+					player.Classes.Remove(c);
 					game.dReset(c);
 				}
 				game.pReset(card);

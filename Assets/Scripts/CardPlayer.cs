@@ -7,22 +7,15 @@ public class CardPlayer : MonoBehaviour, ICardPlayer
 	public List<Card> Hand;
 	public List<Card> Inventary;
 	public List<Card> Bag;
+	public List<Card> Classes;
 	public List<Card> Perks;
-	public List<Card> Class;
 	public List<Card> Partners;
-
-	static readonly Dictionary<string, ConditionClass> ConditionClassesNames = new Dictionary<string, ConditionClass> {
-		{ "Raider", ConditionClass.Raider },
-		{ "Enclave_scientist", ConditionClass.Enclave_scientist },
-		{ "Lone_wanderer", ConditionClass.Lone_wanderer },
-		{ "Brotherhood_paladin", ConditionClass.Brotherhood_paladin } };
 
 	public IEnumerable<ConditionClass> ConditionClasses
 	{
 		get
 		{
-			var classNames = Class.Select(x => x.name);
-			return ConditionClassesNames.Where(x => classNames.Contains(x.Key)).Select(x => x.Value);
+			return Classes.Select(x => x.GetComponent<IModifier>()).Where(x => x.GivesClass!= ConditionClass.No).Select(x => x.GivesClass);
 		}
 	}
 
@@ -42,6 +35,10 @@ public class CardPlayer : MonoBehaviour, ICardPlayer
 	/// Кол-во больших шмоток, которые может нести персонаж
 	/// </summary>
 	const int defaultBigStuffCapacity = 1;
+	/// <summary>
+	/// Кол-во классов, к которым может принадлежать персонаж
+	/// </summary>
+	const int defaultClassCapacity = 1;
 
 	public bool CanTakeBigStuff
 	{
@@ -89,7 +86,9 @@ public class CardPlayer : MonoBehaviour, ICardPlayer
 	{
 		get
 		{
-			return Inventary.Select(x => x.GetComponent<Staff>()).Cast<IModifier>();
+			var inventary = Inventary.Select(x => x.GetComponent<IModifier>());
+			var classes = Classes.Select(x => x.GetComponent<IModifier>());
+			return inventary.Concat(classes);
 		}
 	}
 
@@ -132,11 +131,6 @@ public class CardPlayer : MonoBehaviour, ICardPlayer
 		{
 			this.Perks.Remove(p);
 			game.pReset(p);
-		}
-		foreach (var c in this.Class)
-		{
-			this.Class.Remove(c);
-			game.dReset(c);
 		}
 		isSuper = false;
 		isMegaBrain = false;
