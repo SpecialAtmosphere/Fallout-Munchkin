@@ -4,7 +4,7 @@ using System.Linq;
 
 public class Class : MonoBehaviour
 {
-	public void Activate(CardPlayer player)
+	public void Activate(Player player)
 	{
 		var card = this.GetComponentInParent<Card>();
 		//Add to Class Array

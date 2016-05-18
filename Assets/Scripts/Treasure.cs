@@ -15,7 +15,7 @@ public class Treasure : MonoBehaviour
 		Other
 	}
 
-	public void Use(CardPlayer player)
+	public void Use(Player player)
 	{
 		//TODO: Дописать подробности и описание
 		var card = this.GetComponentInParent<Card>();

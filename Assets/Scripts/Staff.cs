@@ -72,7 +72,7 @@ public class Staff : MonoBehaviour, IUsable
 	/// </summary>
 	/// <param name="player">персонаж</param>
 	/// <returns>true - персонаж может нести шмотку, false - не может</returns>
-	public bool CanCarry(CardPlayer player)
+	public bool CanCarry(Player player)
 	{
 		if (BigStaff && !player.CanTakeBigStuff)
 			return false;
@@ -85,7 +85,7 @@ public class Staff : MonoBehaviour, IUsable
 	/// </summary>
 	/// <param name="player">персонаж</param>
 	/// <returns>true - персонаж может использовать шмотку, false - не может</returns>
-	public bool CanUse(CardPlayer player)
+	public bool CanUse(Player player)
 	{
 		if (!CanCarry(player)) // если персонаж даже нести шмотку не может,
 			return false; // то использовать и подавно
@@ -105,7 +105,7 @@ public class Staff : MonoBehaviour, IUsable
 
 	}
 
-	public void PutOn(CardPlayer player)
+	public void PutOn(Player player)
 	{
 		var card = this.GetComponentInParent<Card>();
 
@@ -139,7 +139,7 @@ public class Staff : MonoBehaviour, IUsable
 		card.Deselect();
 	}
 
-	public void ToBag(CardPlayer player)
+	public void ToBag(Player player)
 	{
 		var card = this.GetComponentInParent<Card>();
 

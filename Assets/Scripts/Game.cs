@@ -5,210 +5,176 @@ using System.Collections;
 
 public class Game : MonoBehaviour
 {
-	public string message;
-	public Door[] Doors;
-	public Treasure[] Treasures;
-	public Perk[] Perks;
-	public CardPlayer[] Players;
+	public List<Door> Doors;
+	public List<Treasure> Treasures;
+	public List<Perk> Perks;
+
 	public string CurrentStage;
-	public CardPlayer CurrentPlayer;
+	public Player CurrentPlayer;
 	public Card CurrentCard;
 	public bool Fight;
+
+	private string message;
 
 	// Use this for initialization
 	void Start()
 	{
 		InitialiseCardSteck();
-		InitializePlayers();
 		StartGame();
 	}
 
 	void OnGUI()
 	{
-		if (GUI.Button(new Rect(0, 0, 90, 30), "Reset Lvl!"))
-		{
-			GameObject.FindObjectOfType<ResetLvl>().Reset();
-		}
-		GUILayout.Label("");
-		GUILayout.Label("Current Stage: " + CurrentStage);
-		GUILayout.Label("System message: " + message);
-		if (CurrentPlayer != null)
-		{
-			GUILayout.Label("Current Player: " + CurrentPlayer.name);
-			GUILayout.Label("Player Lvl: " + CurrentPlayer.Level);
-			GUILayout.Label("Player Power: " + CurrentPlayer.Power);
-			if (CurrentPlayer.Classes != null)
-			{
-				var classString = "";
-				CurrentPlayer.ConditionClasses.ToList().ForEach(x => classString += x.ToString() + " ");
-				GUILayout.Label(string.Format("Player class: {0}", classString));
-			}
-		}
-		if (CurrentStage == "Radiation")
-		{
-			GUILayout.Label("Radiation Defense: " + CurrentPlayer.RadiationDefense);
-		}
-		GUILayout.Label(string.Format("Selected card: {0}", (CurrentCard != null) ? CurrentCard.name : "null"));
-
-		if (CurrentStage == "Start")
-		{
-			if (GUI.Button(new Rect(400, 50, 125, 50), "Start game!"))
-			{
-				GiveCards(CurrentPlayer);
-				CurrentStage = "Begin";
-			}
-		}
-		if (CurrentStage == "Begin")
-		{
-			if (GUI.Button(new Rect(400, 50, 125, 50), "Open Door!"))
-			{
-				OpenDoor();
-			}
-		}
-		if (CurrentStage == "Fight")
-		{
-			if (GUI.Button(new Rect(275, 50, 125, 50), "Fight!"))
-			{
-				FightMonster(CurrentCard);
-			}
-			if (GUI.Button(new Rect(400, 50, 125, 50), "Run!"))
-			{
-				//Прописать смывку от монстра
-			}
-			if (GUI.Button(new Rect(525, 50, 125, 50), "Help!"))
-			{
-				//ПРописать помощь друзей
-			}
-		}
-		if (CurrentStage == "Take")
-		{
-			if (GUI.Button(new Rect(400, 50, 125, 50), "Take to hand!"))
-			{
-				TakeCard(CurrentCard);
-				CurrentStage = "Hide & Seek";
-			}
-		}
-		if (CurrentStage == "Radiation")
-		{
-			if (GUI.Button(new Rect(400, 50, 125, 50), "Throw a dice!"))
-			{
-				ThrowDice(CurrentCard);
-			}
-		}
-		if (CurrentStage == "Hide & Seek")
-		{
-			if (GUI.Button(new Rect(400, 50, 125, 50), "Open door in dark!"))
-			{
-				OpenDoorInDark();
-			}
-		}
+		GUILayout.Label("Cards in deck:" + message);
 	}
 
-	void GiveCards(CardPlayer CurrentPlayer)
+	[PunRPC]
+	public void CardsCount(string msg)
+	{
+		message = msg;
+	}
+	//	GUILayout.Label("Current Stage: " + CurrentStage);
+	//	if (CurrentPlayer != null)
+	//	{
+	//		GUILayout.Label("Current Player: " + CurrentPlayer.name);
+	//		GUILayout.Label("Player Lvl: " + CurrentPlayer.Level);
+	//		GUILayout.Label("Player Power: " + CurrentPlayer.Power);
+	//		if (CurrentPlayer.Classes != null)
+	//		{
+	//			var classString = "";
+	//			CurrentPlayer.ConditionClasses.ToList().ForEach(x => classString += x.ToString() + " ");
+	//			GUILayout.Label(string.Format("Player class: {0}", classString));
+	//		}
+	//	}
+	//	if (CurrentStage == "Radiation")
+	//	{
+	//		GUILayout.Label("Radiation Defense: " + CurrentPlayer.RadiationDefense);
+	//	}
+	//	GUILayout.Label(string.Format("Selected card: {0}", (CurrentCard != null) ? CurrentCard.name : "null"));
+
+		//	if (CurrentStage == "Start")
+		//	{
+		//		if (GUI.Button(new Rect(400, 50, 125, 50), "Start game!"))
+		//		{
+		//			GiveCards(CurrentPlayer);
+		//			CurrentStage = "Begin";
+		//		}
+		//	}
+		//	if (CurrentStage == "Begin")
+		//	{
+		//		if (GUI.Button(new Rect(400, 50, 125, 50), "Open Door!"))
+		//		{
+		//			OpenDoor();
+		//		}
+		//	}
+		//	if (CurrentStage == "Fight")
+		//	{
+		//		if (GUI.Button(new Rect(275, 50, 125, 50), "Fight!"))
+		//		{
+		//			FightMonster(CurrentCard);
+		//		}
+		//		if (GUI.Button(new Rect(400, 50, 125, 50), "Run!"))
+		//		{
+		//			//Прописать смывку от монстра
+		//		}
+		//		if (GUI.Button(new Rect(525, 50, 125, 50), "Help!"))
+		//		{
+		//			//ПРописать помощь друзей
+		//		}
+		//	}
+		//	if (CurrentStage == "Take")
+		//	{
+		//		if (GUI.Button(new Rect(400, 50, 125, 50), "Take to hand!"))
+		//		{
+		//			TakeCard(CurrentCard);
+		//			CurrentStage = "Hide & Seek";
+		//		}
+		//	}
+		//	if (CurrentStage == "Radiation")
+		//	{
+		//		if (GUI.Button(new Rect(400, 50, 125, 50), "Throw a dice!"))
+		//		{
+		//			ThrowDice(CurrentCard);
+		//		}
+		//	}
+		//	if (CurrentStage == "Hide & Seek")
+		//	{
+		//		if (GUI.Button(new Rect(400, 50, 125, 50), "Open door in dark!"))
+		//		{
+		//			OpenDoorInDark();
+		//		}
+		//	}
+		//}
+
+	public void GiveCards(Player player)
 	{
 		for (var i = 0; i < 4; i++)
 		{
-			int irnd = Random.Range(0, Doors.Length);
-			int irnt = Random.Range(0, Treasures.Length);
-			GiveDoors(irnd);
-			GiveTreasures(irnt);
-		}
-		Debug.Log(CurrentPlayer.Hand.Count);
-		for (var i = 0; i < CurrentPlayer.Hand.Count; i++)
-		{
-			int x = i + 1;
-			Vector3 pos = new Vector3(5 + (x * 5), -11, 0);
-			Debug.Log(i);
-			CurrentPlayer.Hand[i].transform.position = pos;
-			CurrentPlayer.Hand[i].transform.Rotate(0, 0, 270);
-		}
-	}
+			var rd = Random.Range(0, Doors.Count);
+			var rt = Random.Range(0, Treasures.Count);
 
-	void GiveDoors(int ind)
-	{
-		var door = Doors[ind];
-		var card = door.GetComponentInParent<Card>();
-		List<Door> Doorlist = Doors.ToList();
-		CurrentPlayer.Hand.Add(card);
-		var hand = CurrentPlayer.transform.FindChild("Hand");
-		card.transform.parent = hand.transform;
-		card.SwitchGameLocation(GameLocations.InHand);
-		Doorlist.RemoveAt(ind);
-	}
+			var door = Doors[rd].GetComponentInParent<Card>();
+			player.ToHand(door);
+			Doors.RemoveAt(rd);
 
-	void GiveTreasures(int ind)
-	{
-		var trs = Treasures[ind];
-		var card = trs.GetComponentInParent<Card>();
-		List<Treasure> Treasurelist = Treasures.ToList();
-		CurrentPlayer.Hand.Add(trs.GetComponentInParent<Card>());
-		var hand = CurrentPlayer.transform.FindChild("Hand");
-		card.transform.parent = hand.transform;
-		card.SwitchGameLocation(GameLocations.InHand);
-		Treasurelist.RemoveAt(ind);
+			var trs = Treasures[rt].GetComponentInParent<Card>();
+			player.ToHand(trs);
+			Treasures.RemoveAt(rt);
+		}
 	}
 
 	void InitialiseCardSteck()
 	{
-		Doors = MeshUpDoors(Resources.FindObjectsOfTypeAll<Door>());
-		Treasures = MeshUpTreasures(Resources.FindObjectsOfTypeAll<Treasure>());
-		Perks = MeshUpPerks(Resources.FindObjectsOfTypeAll<Perk>());
-	}
-
-	void InitializePlayers()
-	{
-		Players = Resources.FindObjectsOfTypeAll<CardPlayer>();
+		Doors = MeshUpDoors(Resources.FindObjectsOfTypeAll<Door>().ToList());
+		Treasures = MeshUpTreasures(Resources.FindObjectsOfTypeAll<Treasure>().ToList());
+		Perks = MeshUpPerks(Resources.FindObjectsOfTypeAll<Perk>().ToList());
 	}
 
 	void StartGame()
 	{
 		CurrentStage = "Start";
-		CurrentPlayer = Players[0];
 	}
 
-	Door[] MeshUpDoors(Door[] doors)
+	private List<Door> MeshUpDoors(List<Door> doors)
 	{
 		int newNum;
 		int oldNum = 0;
 		foreach (var d in doors)
 		{
-			newNum = ReturnRandomNumber(doors.Length, oldNum);
-			d.GetComponent<SpriteRenderer>().sortingOrder = newNum;
+			newNum = ReturnRandomNumber(doors.Count, oldNum);
 			d.GetComponentInParent<Card>().Id = newNum;
 			oldNum = newNum;
 		}
 		return doors;
 	}
 
-	Treasure[] MeshUpTreasures(Treasure[] treasures)
+	private List<Treasure> MeshUpTreasures(List<Treasure> treasures)
 	{
 		int newNum;
 		int oldNum = 0;
 		foreach (var d in treasures)
 		{
-			newNum = ReturnRandomNumber(treasures.Length, oldNum);
-			d.GetComponent<SpriteRenderer>().sortingOrder = newNum;
+			newNum = ReturnRandomNumber(treasures.Count, oldNum);
 			d.GetComponentInParent<Card>().Id = newNum;
 			oldNum = newNum;
 		}
 		return treasures;
 	}
 
-	Perk[] MeshUpPerks(Perk[] perks)
+	private List<Perk> MeshUpPerks(List<Perk> perks)
 	{
 		int newNum;
 		int oldNum = 0;
 		foreach (var d in perks)
 		{
-			newNum = ReturnRandomNumber(perks.Length, oldNum);
-			d.GetComponent<SpriteRenderer>().sortingOrder = newNum;
+			newNum = ReturnRandomNumber(perks.Count, oldNum);
 			d.GetComponentInParent<Card>().Id = newNum;
 			oldNum = newNum;
 		}
 		return perks;
 	}
 
-	int ReturnRandomNumber(int count, int oldValue)
+	private int ReturnRandomNumber(int count, int oldValue)
 	{
 		int i = 0;
 		int idl = Random.Range(1, count);
@@ -221,7 +187,7 @@ public class Game : MonoBehaviour
 
 	void OpenDoor()
 	{
-		var door = Doors[Random.Range(1, Doors.Length)];
+		var door = Doors[Random.Range(1, Doors.Count)];
 		Debug.Log(door.ToString());
 		door.transform.Translate(15, -35, 0);
 		door.transform.Rotate(0, 0, 270);
@@ -267,7 +233,7 @@ public class Game : MonoBehaviour
 
 	void OpenDoorInDark()
 	{
-		var door = Doors[Random.Range(1, Doors.Length)];
+		var door = Doors[Random.Range(1, Doors.Count)];
 		door.GetComponentInParent<Card>().player = CurrentPlayer;
 		Card currentCard = door.GetComponentInParent<Card>();
 		CurrentCard = currentCard;

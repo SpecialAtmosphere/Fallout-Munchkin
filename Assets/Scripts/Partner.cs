@@ -5,7 +5,7 @@ public class Partner : MonoBehaviour
 {
 	public int Bonus;
 
-	public void Activate(CardPlayer player)
+	public void Activate(Player player)
 	{
 		if (player.CanTakePartner)
 		{

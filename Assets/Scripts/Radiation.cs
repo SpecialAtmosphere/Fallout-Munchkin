@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Radiation : MonoBehaviour
 {
-	public void Acivate(CardPlayer player)
+	public void Acivate(Player player)
 	{
 		var card = this.GetComponentInParent<Card>();
 		var door = card.GetComponent<Door>();

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 public class Trap : MonoBehaviour
 {
-	public void Activate(CardPlayer player)
+	public void Activate(Player player)
 	{
 		var card = this.GetComponentInParent<Card>();
 		var door = card.GetComponent<Door>();
